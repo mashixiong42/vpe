@@ -1,5 +1,5 @@
 {
-  "name": "examples",
+  "name": "@vpe/examples",
   "version": "0.0.7",
   "private": false,
   "dependencies": {
@@ -22,5 +22,5 @@
     "@vpe/core": "^0.0.7",
     "typescript": "^3.5.1"
   },
-  "gitHead": "dd1959f96eebee12168a5b1cc2aac713e9444321"
+  "gitHead": "0776973459ed6c3a7c9e40284084c825b2322ab3"
 }
