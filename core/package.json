@@ -1,0 +1,48 @@
+{
+  "name": "@vpe/core",
+  "version": "0.0.1",
+  "description": "VPE (Very Programmable Editor) core",
+  "author": "Mashixiong",
+  "license": "MIT",
+  "private": false,
+  "main": "dist",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@types/classnames": "^2.2.8",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "classnames": "^2.2.6",
+    "mitt": "^1.1.3",
+    "prosemirror-commands": "^1.0.8",
+    "prosemirror-dropcursor": "^1.1.1",
+    "prosemirror-gapcursor": "^1.0.3",
+    "prosemirror-history": "^1.0.4",
+    "prosemirror-inputrules": "^1.0.4",
+    "prosemirror-keymap": "^1.0.1",
+    "prosemirror-model": "^1.7.1",
+    "prosemirror-schema-basic": "^1.0.1",
+    "prosemirror-schema-list": "^1.0.3",
+    "prosemirror-state": "^1.2.3",
+    "prosemirror-transform": "^1.1.3",
+    "prosemirror-view": "^1.9.8",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "typescript": "^3.5.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint -p ."
+  },
+  "devDependencies": {
+    "prettier": "1.18.0",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0"
+  },
+  "peerDependencies": {}
+}

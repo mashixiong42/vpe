@@ -1,0 +1,17 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "linterOptions": {
+    "exclude": ["node_modules/**/*.ts"]
+  },
+  "jsRules": {},
+  "rules": {
+    "curly": false,
+    "ordered-imports": false,
+    "semicolon": false,
+    "trailing-comma": false,
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "quotemark": [true, "single", "jsx-double"]
+  },
+  "rulesDirectory": []
+}

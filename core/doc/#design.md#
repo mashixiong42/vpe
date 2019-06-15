@@ -1,0 +1,34 @@
+# Structure
+**CoreView**
+- A react wrapper on top of prosemirror-view
+- props:
+```
+pmMountKey?: key of the div to mount the editor
+pmProps?: object with keys map to prosemirror-view handlers
+renderer: (editor, view, data) => React.Component : the render that renders the
+editor as part of larger UI. It can use the view to render extra components such
+as toolbar,side toolbar, bottom editor status .... Data is used by the editor to
+pass additional information deepedning on ontext...
+
+```
+
+## Core plugins
+- 
+
+## Extension
+
+### Structure
+- rules
+- keymap
+- schema
+- plugin : decorators etc are implemented within the plugin
+- nodeView
+- command
+- test : (view, state, option) => result : a function to test certain action can be applied or to get certain state
+- ui : the extension's ui that is not a part of editor ui. could be menu item or menu item with dialoge or complex interactions for example fileupload...
+  - dom
+  - react
+  - vue
+  - ...
+- index : export all
+- README.md : read me or help
