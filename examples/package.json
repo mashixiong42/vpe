@@ -1,7 +1,7 @@
 {
   "name": "examples",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
