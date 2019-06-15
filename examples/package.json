@@ -21,5 +21,6 @@
     "@types/node": "^12.0.7",
     "@vpe/core": "^0.0.1",
     "typescript": "^3.5.1"
-  }
+  },
+  "gitHead": "dd1959f96eebee12168a5b1cc2aac713e9444321"
 }

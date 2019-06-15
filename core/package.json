@@ -43,5 +43,6 @@
     "prettier": "1.18.0",
     "tslint": "^5.17.0",
     "tslint-config-prettier": "^1.18.0"
-  }
+  },
+  "gitHead": "dd1959f96eebee12168a5b1cc2aac713e9444321"
 }
