@@ -1,5 +1,6 @@
-export enum CoreEvents  {
-    ViewUpdate = 'core-view-update'
+export enum CoreEvents {
+    ViewUpdate = 'core-view-update',
+    SendMeView = 'core-sendme-view'
 }
 
 export enum CorePluginNames {
