@@ -1,0 +1,19 @@
+{
+  "name": "@vpe/extensions",
+  "version": "0.0.1",
+  "description": "VPE extensions",
+  "main": "dist",
+  "author": "mashixiong24",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "prosemirror-commands": "^1.0.8",
+    "prosemirror-model": "^1.7.1"
+  },
+    "devDependencies": {
+        "@vpe/core": "^0.0.1"
+    },
+    "scripts": {
+        "build": "tsc"
+    }
+}

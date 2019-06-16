@@ -1,7 +1,7 @@
 # Structure
-**CoreView**
-- A react wrapper on top of prosemirror-view
-- props:
+                       **  Co reV iew **
+              - A react wrapper on top of   p r o s e m i r r o r - view
+                            - props:
 ```
 pmMountKey?: key of the div to mount the editor
 pmProps?: object with keys map to prosemirror-view handlers
@@ -13,4 +13,25 @@ pass additional information deepedning on ontext...
 ```
 
 ## Core plugins
-- 
+              - EventBusPlugin
+              - ViewUpdateemitter
+
+## Extension
+### Structure
+
+- schema
+  - nodes
+  - marks
+- inputrules
+- keymap
+- plugins
+- test : (view: any, state: any) => any : test if current state, or commands can be applied now.
+- nodeView
+- menuItem
+  - react
+  - vue
+  - dom
+- externalView : any view that is outside / indepenent of the ProseMirror view
+  - react
+  - vue
+  - dom

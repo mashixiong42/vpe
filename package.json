@@ -1,13 +1,14 @@
 {
-  "name": "root",
-  "private": true,
-  "npmClient": "yarn",
-  "useWorkspaces": true,
-  "workspaces": [
-    "core",
-    "examples"
-  ],
-  "devDependencies": {
-    "lerna": "^3.14.1"
-  }
+    "name": "root",
+    "private": true,
+    "npmClient": "yarn",
+    "useWorkspaces": true,
+    "workspaces": [
+        "core",
+        "examples",
+        "extensions"
+    ],
+    "devDependencies": {
+        "lerna": "^3.14.1"
+    }
 }

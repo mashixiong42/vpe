@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react'
-import { Interface } from 'readline'
 
 /**
  * Custom CoreViweProps
@@ -43,21 +42,21 @@ export interface IViewInternals {
   editable?: (state: any) => boolean
   attribultes?: any | ((state: any) => any)
   scrollThreshold?:
-    | number
-    | {
-        top: number
-        right: number
-        bottom: number
-        left: number
-      }
+  | number
+  | {
+    top: number
+    right: number
+    bottom: number
+    left: number
+  }
   scrollMargin?:
-    | number
-    | {
-        top: number
-        right: number
-        bottom: number
-        left: number
-      }
+  | number
+  | {
+    top: number
+    right: number
+    bottom: number
+    left: number
+  }
 }
 
 /**

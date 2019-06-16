@@ -5,8 +5,8 @@ import {
   IRendererProps,
   getEventBus,
   basicSetup,
-    createEventBus,
-    CoreEvents,
+  createEventBus,
+  CoreEvents
 } from '@vpe/core'
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
 
@@ -23,29 +23,30 @@ const renderer = ({ editor, view }: IRendererProps) => {
 
 const eventBus = createEventBus()
 eventBus.on('test', (data: any) => console.log('eventbus handler  no2', data))
-eventBus.on(CoreEvents.ViewUpdate, (data: any) => console.log('view update', data))
+eventBus.on(CoreEvents.ViewUpdate, (data: any) =>
+  console.log('view update', data)
+)
 eventBus.emit(CoreEvents.SendMeView)
 
 class App extends React.Component {
+  public componentDidMount() {
+    eventBus.emit(CoreEvents.SendMeView)
+  }
 
-    public componentDidMount() {
-        eventBus.emit(CoreEvents.SendMeView)
-    }
-
-    public render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <CoreView
-                    renderer={renderer}
-                    eventBus={eventBus}
-                    plugins={basicSetup({ schema: defaultSchema, history: true })}
-                />
-            </div>
-        )
-    }
+  public render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
+        <CoreView
+          renderer={renderer}
+          eventBus={eventBus}
+          plugins={basicSetup({ schema: defaultSchema, history: true })}
+        />
+      </div>
+    )
+  }
 }
 
 export default App
