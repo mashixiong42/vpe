@@ -800,32 +800,6 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
-"@vpe/core@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@vpe/core/-/core-0.0.1.tgz#553548f38b036dd6619268143f59af79b35ada1a"
-  integrity sha512-qIPMgKNCWhYqlyNXzvayHxrYa7BO/7KGy7cTdjYz7l3LnzLWX/UyjdQ/6/lMv6Uki+6zErXkQO0sbQC7LdNEQQ==
-  dependencies:
-    "@types/classnames" "^2.2.8"
-    "@types/react" "^16.8.19"
-    "@types/react-dom" "^16.8.4"
-    classnames "^2.2.6"
-    mitt "^1.1.3"
-    prosemirror-commands "^1.0.8"
-    prosemirror-dropcursor "^1.1.1"
-    prosemirror-gapcursor "^1.0.3"
-    prosemirror-history "^1.0.4"
-    prosemirror-inputrules "^1.0.4"
-    prosemirror-keymap "^1.0.1"
-    prosemirror-model "^1.7.1"
-    prosemirror-schema-basic "^1.0.1"
-    prosemirror-schema-list "^1.0.3"
-    prosemirror-state "^1.2.3"
-    prosemirror-transform "^1.1.3"
-    prosemirror-view "^1.9.8"
-    react "^16.8.6"
-    react-dom "^16.8.6"
-    typescript "^3.5.1"
-
 JSONStream@^1.0.4, JSONStream@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"

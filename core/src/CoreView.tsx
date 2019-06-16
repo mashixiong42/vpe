@@ -6,10 +6,10 @@ import { EditorView } from 'prosemirror-view'
 import { EditorState } from 'prosemirror-state'
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
 
-import { createEventBusPlugin } from './EventBusPlugin'
-import { createViewUpdateEmitter } from './ViewUpdateEmitter'
+import { createEventBusPlugin } from './plugins/EventBusPlugin'
+import { createViewUpdateEmitter } from './plugins/ViewUpdateEmitter'
 
-import { CorePluginKeys } from './CorePlugins'
+import { CorePluginKeys } from './plugins/CorePluginKeys'
 
 import {
   ICoreViewProps,
@@ -33,7 +33,7 @@ const CoreView = (props: ICoreViewProps) => {
   const editorRef = useRef(null)
   const [ignored, forceUpdate] = useReducer(x => x + 1, 0)
   const eventBusPlugin = createEventBusPlugin(eventBus)
-    const viewUpdateEmitter = createViewUpdateEmitter()
+  const viewUpdateEmitter = createViewUpdateEmitter()
   if (plugins) {
     for (const plugin of plugins) {
       if (
@@ -56,13 +56,13 @@ const CoreView = (props: ICoreViewProps) => {
         onChange(state.doc)
       }
     },
-    state: EditorState.create({
-      doc,
-        plugins: [...(plugins ? [...plugins] : []), eventBusPlugin, viewUpdateEmitter],
-      schema: schema || defaultSchema,
-      selection,
-      storedMarks
-    })
+      state: EditorState.create({
+          doc,
+          plugins: [...(plugins ? [...plugins] : []), eventBusPlugin, viewUpdateEmitter],
+          schema: schema || defaultSchema,
+          selection,
+          storedMarks
+      })
   })
 
   useEffect(() => {

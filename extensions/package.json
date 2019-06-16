@@ -11,7 +11,7 @@
     "prosemirror-model": "^1.7.1"
   },
     "devDependencies": {
-        "@vpe/core": "^0.0.1"
+        "@vpe/core": "^0.0"
     },
     "scripts": {
         "build": "tsc"

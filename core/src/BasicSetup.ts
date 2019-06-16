@@ -7,7 +7,7 @@ import { gapCursor } from 'prosemirror-gapcursor'
 import { buildKeymap } from './keymap/defaultKeymap'
 import { buildInputRules } from './inputrules'
 
-export { buildKeymap, buildInputRules }
+export { buildInputRules }
 
 export function basicSetup(options: any) {
   const plugins = [
