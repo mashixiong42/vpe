@@ -6,7 +6,8 @@ import {
   getEventBus,
   basicSetup,
   createEventBus,
-  CoreEvents
+    CoreEvents,
+    createStateTesterPlugin,
 } from '@vpe/core'
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
 
@@ -27,7 +28,13 @@ eventBus.on(CoreEvents.ViewUpdate, (data: any) =>
   console.log('view update', data)
 )
 eventBus.emit(CoreEvents.SendMeView)
-
+eventBus.on('test-result', (data: any) => console.log('test result handler', data))
+const stateTester = createStateTesterPlugin({
+    resultEventName: 'test-result',
+    tester: () => ({
+        result: 'alright'
+    })
+})
 class App extends React.Component {
   public componentDidMount() {
     eventBus.emit(CoreEvents.SendMeView)
@@ -42,7 +49,7 @@ class App extends React.Component {
         <CoreView
           renderer={renderer}
           eventBus={eventBus}
-          plugins={basicSetup({ schema: defaultSchema, history: true })}
+          plugins={[...basicSetup({ schema: defaultSchema, history: true }), stateTester]}
         />
       </div>
     )

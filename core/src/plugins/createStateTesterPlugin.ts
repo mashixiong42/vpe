@@ -14,13 +14,14 @@ export const createStateTesterPlugin = (config: IStateTesterConfig) => {
   return new Plugin({
     key: stateTesterPluginKey,
     view(view: any) {
-      this.view = view
+      console.log('initiate state tester plugin...')
+      this.viewP = view
       const p = this
       const eventbus = getEventBus({ view })
       eventbus.emit(resultEventName, tester(view))
       return {
         update: (view: any, prevState: any) => {
-          p.view = view
+          p.viewP = view
           p.prevState = prevState
           eventbus.emit(resultEventName, tester(view, prevState))
         }
