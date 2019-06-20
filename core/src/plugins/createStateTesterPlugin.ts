@@ -18,7 +18,7 @@ export const createStateTesterPlugin = (config: IStateTesterConfig) => {
       this.viewP = view
       const p = this
       const eventbus = getEventBus({ view })
-      eventbus.emit(resultEventName, tester(view))
+      // eventbus.emit(resultEventName, tester(view))
       return {
         update: (view: any, prevState: any) => {
           p.viewP = view
