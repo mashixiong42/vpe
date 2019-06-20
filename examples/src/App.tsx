@@ -41,7 +41,7 @@ const BoldAction = () => {
             console.log('update view')
             setView(viewP)
         })
-        eventBus.on(boldTesterConfig.resultEventName, ({active: activeP}: any) => {
+        eventBus.on(boldTesterConfig.resultEventName, ({result: {active: activeP}}: any) => {
             setActive(activeP)
         })
     },[])

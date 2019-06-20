@@ -92,6 +92,8 @@ export interface ICoreViewProps {
   eventBus?: any
 }
 
+export type StateTester = (view: any, prevState?: any) => any
+
 /**
  * The spec to be used to create stateTester plugin
  * The plugin will run the tester and emit the result through resultEventName event
@@ -99,5 +101,5 @@ export interface ICoreViewProps {
 
 export interface IStateTesterConfig {
   resultEventName: string
-  tester: (view: any, prevState?: any) => any
+  tester: any | [IStateTesterConfig]
 }

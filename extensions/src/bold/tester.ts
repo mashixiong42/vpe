@@ -8,7 +8,7 @@ const markActive = (state: any, type: any): boolean => {
 
 export const BoldTestResultEventName = 'bold-test-result'
 
-export type IBoldStateTestResult = {
+export interface IBoldStateTestResult {
   enable: true
   active: boolean
   select: true
