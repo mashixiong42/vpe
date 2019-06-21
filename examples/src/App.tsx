@@ -9,11 +9,12 @@ import {
   CoreEvents,
   createStateTesterPlugin,
 } from '@vpe/core'
-import { FiBold } from 'react-icons/fi'
+import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
+
+
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
-import { strong } from '@vpe/extensions'
+import { strong, em, code } from '@vpe/extensions'
 import './App.css'
-import { toggleMark } from 'prosemirror-commands'
 
 const renderer = ({ editor, view }: IRendererProps) => {
   return (
@@ -25,12 +26,17 @@ const renderer = ({ editor, view }: IRendererProps) => {
 }
 
 const { strongTesterConfig } = strong.tester
+const { emTesterConfig } = em.tester
+const { codeTesterConfig } = code.tester
+const { toggleStrong } = strong.command
+const { toggleEm } = em.command
+const { toggleCode } = code.command
 
 const eventBus = createEventBus()
 
-eventBus.on(strongTesterConfig.resultEventName, (data: any) => console.log('bold test result handler', data))
-
 const boldTester = createStateTesterPlugin(strongTesterConfig)
+const emTester = createStateTesterPlugin(emTesterConfig)
+const codeTester = createStateTesterPlugin(codeTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -38,7 +44,6 @@ const BoldAction = () => {
 
   React.useEffect(() => {
     eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      console.log('update view')
       setView(viewP)
     })
     eventBus.on(strongTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
@@ -49,12 +54,60 @@ const BoldAction = () => {
   return <FiBold style={style} onClick={
     () => {
       if (view) {
-        toggleMark(view!.state.schema.marks.strong)(view!.state, view!.dispatch)
+        toggleStrong(view!.state, view!.dispatch)
       }
     }
   } />
 
 }
+
+const EmAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(emTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <FiItalic style={style} onClick={
+    () => {
+      if (view) {
+        toggleEm(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
+const CodeAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(codeTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <FiCode style={style} onClick={
+    () => {
+      if (view) {
+        toggleCode(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
+
 
 class App extends React.Component {
   public view: any
@@ -68,11 +121,13 @@ class App extends React.Component {
         </header>
         <div>
           <BoldAction />
+          <EmAction />
+          <CodeAction />
         </div>
         <CoreView
           renderer={renderer}
           eventBus={eventBus}
-          plugins={[...basicSetup({ schema: defaultSchema, history: true }), boldTester]}
+          plugins={[...basicSetup({ schema: defaultSchema, history: true }), boldTester, emTester, codeTester]}
         />
       </div>
     )
