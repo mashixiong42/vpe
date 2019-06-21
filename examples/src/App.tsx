@@ -10,10 +10,10 @@ import {
   createStateTesterPlugin,
 } from '@vpe/core'
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
-
+import { MdFormatStrikethrough } from 'react-icons/md'
 
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
-import { strong, em, code } from '@vpe/extensions'
+import { strong, em, code, strikethrough } from '@vpe/extensions'
 import './App.css'
 
 const renderer = ({ editor, view }: IRendererProps) => {
@@ -28,15 +28,18 @@ const renderer = ({ editor, view }: IRendererProps) => {
 const { strongTesterConfig } = strong.tester
 const { emTesterConfig } = em.tester
 const { codeTesterConfig } = code.tester
+const { strikethroughTesterConfig } = strikethrough.tester
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
 const { toggleCode } = code.command
+const { toggleStrikethrough } = strikethrough.command
 
 const eventBus = createEventBus()
 
 const boldTester = createStateTesterPlugin(strongTesterConfig)
 const emTester = createStateTesterPlugin(emTesterConfig)
 const codeTester = createStateTesterPlugin(codeTesterConfig)
+const strikethroughTester = createStateTesterPlugin(strikethroughTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -108,6 +111,38 @@ const CodeAction = () => {
 }
 
 
+const StrikethroughAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(strikethroughTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <MdFormatStrikethrough style={style} onClick={
+    () => {
+      if (view) {
+        toggleStrikethrough(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
+
+const schema = {
+  ...defaultSchema, marks: {
+    ...defaultSchema.marks,
+    ...strikethrough.schema
+  }
+}
+
+console.log(schema)
 
 class App extends React.Component {
   public view: any
@@ -123,11 +158,12 @@ class App extends React.Component {
           <BoldAction />
           <EmAction />
           <CodeAction />
+          <StrikethroughAction />
         </div>
         <CoreView
           renderer={renderer}
           eventBus={eventBus}
-          plugins={[...basicSetup({ schema: defaultSchema, history: true }), boldTester, emTester, codeTester]}
+          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester]}
         />
       </div>
     )
