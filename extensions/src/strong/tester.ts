@@ -1,24 +1,19 @@
 import { IStateTesterConfig } from '@vpe/core'
-
-const markActive = (state: any, type: any): boolean => {
-  let { from, $from, to, empty } = state.selection
-  if (empty) return type.isInSet(state.storedMarks || $from.marks())
-  else return state.doc.rangeHasMark(from, to, type)
-}
+import { markActive } from '@vpe/core'
 
 export const StrongTestResultEventName = 'strong-test-result'
 
 export interface IStrongStateTestResult {
-  enable: true
   active: boolean
+  enable: true
   select: true
 }
 
 export const tester = (view: any, _: any): IStrongStateTestResult => {
   const active = markActive(view.state, view.state.schema.marks.strong)
   return ({
-    enable: true,
     active,
+    enable: true,
     select: true,
   })
 }
