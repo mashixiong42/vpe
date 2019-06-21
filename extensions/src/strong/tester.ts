@@ -6,18 +6,16 @@ const markActive = (state: any, type: any): boolean => {
   else return state.doc.rangeHasMark(from, to, type)
 }
 
-export const BoldTestResultEventName = 'bold-test-result'
+export const StrongTestResultEventName = 'strong-test-result'
 
-export interface IBoldStateTestResult {
+export interface IStrongStateTestResult {
   enable: true
   active: boolean
   select: true
 }
 
-let testCount = 0
-export const tester = (view: any, _: any): IBoldStateTestResult => {
+export const tester = (view: any, _: any): IStrongStateTestResult => {
   const active = markActive(view.state, view.state.schema.marks.strong)
-  console.log(active, markActive, testCount++)
   return ({
     enable: true,
     active,
@@ -25,7 +23,7 @@ export const tester = (view: any, _: any): IBoldStateTestResult => {
   })
 }
 
-export const boldTesterConfig: IStateTesterConfig = {
-  resultEventName: BoldTestResultEventName,
+export const strongTesterConfig: IStateTesterConfig = {
+  resultEventName: StrongTestResultEventName,
   tester
 }

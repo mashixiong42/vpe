@@ -1,3 +1,3 @@
-import * as bold from './bold/index'
+import * as strong from './strong/index'
 
-export { bold }
+export { strong }
