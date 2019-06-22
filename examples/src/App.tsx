@@ -1,4 +1,6 @@
 import 'prosemirror-view/style/prosemirror.css'
+import { Schema } from 'prosemirror-model'
+
 import * as React from 'react'
 import {
   CoreView,
@@ -12,7 +14,7 @@ import {
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
 import { MdFormatStrikethrough } from 'react-icons/md'
 
-import { schema as defaultSchema } from 'prosemirror-schema-basic'
+import { nodes, marks } from 'prosemirror-schema-basic'
 import { strong, em, code, strikethrough } from '@vpe/extensions'
 import './App.css'
 
@@ -135,13 +137,15 @@ const StrikethroughAction = () => {
 }
 
 
-const schema = {
-  ...defaultSchema, marks: {
-    ...defaultSchema.marks,
-    ...strikethrough.schema
-  }
+const schemaDef = {
+  marks: {
+    ...marks,
+    ...strikethrough.schema.marks
+  },
+  nodes
 }
 
+const schema = new Schema(schemaDef)
 console.log(schema)
 
 class App extends React.Component {
@@ -161,6 +165,7 @@ class App extends React.Component {
           <StrikethroughAction />
         </div>
         <CoreView
+          schema={schema}
           renderer={renderer}
           eventBus={eventBus}
           plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester]}
