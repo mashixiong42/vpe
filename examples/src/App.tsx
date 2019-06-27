@@ -4,7 +4,6 @@ import { Schema } from 'prosemirror-model'
 import * as React from 'react'
 import {
   IRendererProps,
-  getEventBus,
   basicSetup,
   createEventBus,
   CoreEvents,
@@ -18,11 +17,11 @@ import {
 const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
-import { MdFormatStrikethrough } from 'react-icons/md'
+import { MdFormatStrikethrough, MdFormatUnderlined } from 'react-icons/md'
 import { FaSuperscript, FaSubscript } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
-import { strong, em, code, strikethrough, sup, sub } from '@vpe/extensions'
+import { strong, em, code, strikethrough, sup, sub, underline } from '@vpe/extensions'
 import './App.css'
 
 const renderer = ({ editor, view }: IRendererProps) => {
@@ -38,6 +37,7 @@ const { strongTesterConfig } = strong.tester
 const { emTesterConfig } = em.tester
 const { codeTesterConfig } = code.tester
 const { strikethroughTesterConfig } = strikethrough.tester
+const { underlineTesterConfig } = underline.tester
 const { supTesterConfig } = sup.tester
 const { subTesterConfig } = sub.tester
 const { toggleStrong } = strong.command
@@ -46,6 +46,7 @@ const { toggleCode } = code.command
 const { toggleStrikethrough } = strikethrough.command
 const { toggleSup } = sup.command
 const { toggleSub } = sub.command
+const { toggleUnderline } = underline.command
 
 const eventBus = createEventBus()
 
@@ -55,6 +56,7 @@ const codeTester = createStateTesterPlugin(codeTesterConfig)
 const strikethroughTester = createStateTesterPlugin(strikethroughTesterConfig)
 const supTester = createStateTesterPlugin(supTesterConfig)
 const subTester = createStateTesterPlugin(subTesterConfig)
+const underlineTester = createStateTesterPlugin(underlineTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -196,13 +198,37 @@ const SubAction = () => {
 
 }
 
+const UnderlineAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(underlineTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <MdFormatUnderlined style={style} onClick={
+    () => {
+      if (view) {
+        toggleUnderline(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
 
 const schemaDef = {
   marks: {
     ...marks,
     ...strikethrough.schema.marks,
     ...sup.schema.marks,
-    ...sub.schema.marks
+    ...sub.schema.marks,
+    ...underline.schema.marks,
   },
   nodes
 }
@@ -227,12 +253,13 @@ class App extends React.Component {
           <StrikethroughAction />
           <SupAction />
           <SubAction />
+          <UnderlineAction />
         </div>
         <CoreView
           schema={schema}
           renderer={renderer}
           eventBus={eventBus}
-          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester]}
+          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester]}
         />
       </div>
     )
