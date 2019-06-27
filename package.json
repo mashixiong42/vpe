@@ -5,7 +5,7 @@
   "useWorkspaces": true,
   "workspaces": [
     "core",
-    "ReactEd",
+    "ReactEditor",
     "examples",
     "extensions"
   ],

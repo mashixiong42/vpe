@@ -12,8 +12,10 @@ import {
 } from '@vpe/core'
 
 import {
-  react
-} from '@vpe/react
+  core
+} from '@vpe/ReactEditor'
+
+const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
 import { MdFormatStrikethrough } from 'react-icons/md'
@@ -31,8 +33,6 @@ const renderer = ({ editor, view }: IRendererProps) => {
     </>
   )
 }
-
-const { CoreView } = react
 
 const { strongTesterConfig } = strong.tester
 const { emTesterConfig } = em.tester

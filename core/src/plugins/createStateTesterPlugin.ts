@@ -1,7 +1,7 @@
 import { Plugin, PluginKey } from 'prosemirror-state'
 
 import { getEventBus } from './EventBusPlugin'
-import { IStateTesterConfig, StateTester } from '../index.types'
+import { IStateTesterConfig, StateTester } from '../commonTypes'
 
 export const getStateTesterPluginKey = (resultEventName: string) => new PluginKey('core-tester-' + resultEventName)
 

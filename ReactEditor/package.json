@@ -1,5 +1,5 @@
 {
-  "name": "react",
+  "name": "@vpe/ReactEditor",
   "version": "0.0.1",
   "description": "Prebuilt editor built on React",
   "main": "dist",
