@@ -6,16 +6,7 @@ import { EditorView } from 'prosemirror-view'
 import { EditorState } from 'prosemirror-state'
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
 
-import { createEventBusPlugin } from './plugins/EventBusPlugin'
-import { createViewUpdateEmitter } from './plugins/ViewUpdateEmitter'
-
-import { CorePluginKeys } from './plugins/CorePluginKeys'
-
-import {
-  ICoreViewProps,
-  CoreViewMountClassName,
-  CoreViewWrapperClassName
-} from './index.types'
+import { createEventBusPlugin, createViewUpdateEmitter, CorePluginKeys, ICoreViewProps, CoreViewMountClassName, CoreViewWrapperClassName } from '@vpe/core'
 
 const CoreView = (props: ICoreViewProps) => {
   const {
@@ -56,13 +47,13 @@ const CoreView = (props: ICoreViewProps) => {
         onChange(state.doc)
       }
     },
-      state: EditorState.create({
-          doc,
-          plugins: [...(plugins ? [...plugins] : []), eventBusPlugin, viewUpdateEmitter],
-          schema: schema || defaultSchema,
-          selection,
-          storedMarks
-      })
+    state: EditorState.create({
+      doc,
+      plugins: [...(plugins ? [...plugins] : []), eventBusPlugin, viewUpdateEmitter],
+      schema: schema || defaultSchema,
+      selection,
+      storedMarks
+    })
   })
 
   useEffect(() => {
@@ -70,9 +61,10 @@ const CoreView = (props: ICoreViewProps) => {
   }, [])
 
   const editor = (
-    <div className={classnames(className, CoreViewWrapperClassName)}>
+    <div className={classnames(className, CoreViewWrapperClassName)} >
       <div
-        className={classnames(className, CoreViewMountClassName)}
+        className={classnames(className, CoreViewMountClassName)
+        }
         ref={editorRef}
       />
     </div>

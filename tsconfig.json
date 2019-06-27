@@ -8,11 +8,11 @@
     "noImplicitAny": true,
     "strictNullChecks": false,
     "declaration": true,
-      "jsx": "react",
-      "moduleResolution": "node",
+    "jsx": "react",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-      "lib": ["ES6", "dom"]
+    "lib": ["ES6", "dom"]
   },
   "include": ["src/**/*"]
 }

@@ -3,7 +3,6 @@ import { Schema } from 'prosemirror-model'
 
 import * as React from 'react'
 import {
-  CoreView,
   IRendererProps,
   getEventBus,
   basicSetup,
@@ -11,6 +10,11 @@ import {
   CoreEvents,
   createStateTesterPlugin,
 } from '@vpe/core'
+
+import {
+  react
+} from '@vpe/react
+
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
 import { MdFormatStrikethrough } from 'react-icons/md'
 import { FaSuperscript, FaSubscript } from 'react-icons/fa'
@@ -27,6 +31,8 @@ const renderer = ({ editor, view }: IRendererProps) => {
     </>
   )
 }
+
+const { CoreView } = react
 
 const { strongTesterConfig } = strong.tester
 const { emTesterConfig } = em.tester

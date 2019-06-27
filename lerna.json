@@ -1,5 +1,11 @@
 {
   "npmClient": "yarn",
   "useWorkspaces": true,
+  "workspaces": [
+    "core",
+    "react",
+    "examples",
+    "extensions"
+  ],
   "version": "0.0.8"
 }

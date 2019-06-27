@@ -10,10 +10,10 @@
     "prosemirror-commands": "^1.0.8",
     "prosemirror-model": "^1.7.1"
   },
-    "devDependencies": {
-        "@vpe/core": "^0.0"
-    },
-    "scripts": {
-        "build": "tsc"
-    }
+  "devDependencies": {
+    "@vpe/core": "^0.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
 }
