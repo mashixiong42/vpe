@@ -1,7 +1,12 @@
 import 'prosemirror-view/style/prosemirror.css'
 import { Schema } from 'prosemirror-model'
 
+import Tippy from '@tippy.js/react'
+
 import * as React from 'react'
+
+const { forwardRef } = React
+
 import {
   IRendererProps,
   basicSetup,
@@ -17,11 +22,12 @@ import {
 const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
-import { MdFormatStrikethrough, MdFormatUnderlined } from 'react-icons/md'
+import { MdFormatStrikethrough, MdFormatUnderlined, MdLink } from 'react-icons/md'
 import { FaSuperscript, FaSubscript } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
-import { strong, em, code, strikethrough, sup, sub, underline } from '@vpe/extensions'
+import { strong, em, code, strikethrough, sup, sub, underline, link } from '@vpe/extensions'
+
 import './App.css'
 
 const renderer = ({ editor, view }: IRendererProps) => {
@@ -38,6 +44,7 @@ const { emTesterConfig } = em.tester
 const { codeTesterConfig } = code.tester
 const { strikethroughTesterConfig } = strikethrough.tester
 const { underlineTesterConfig } = underline.tester
+const { linkTesterConfig } = link.tester
 const { supTesterConfig } = sup.tester
 const { subTesterConfig } = sub.tester
 const { toggleStrong } = strong.command
@@ -47,6 +54,7 @@ const { toggleStrikethrough } = strikethrough.command
 const { toggleSup } = sup.command
 const { toggleSub } = sub.command
 const { toggleUnderline } = underline.command
+const { toggleLink } = link.command
 
 const eventBus = createEventBus()
 
@@ -57,6 +65,7 @@ const strikethroughTester = createStateTesterPlugin(strikethroughTesterConfig)
 const supTester = createStateTesterPlugin(supTesterConfig)
 const subTester = createStateTesterPlugin(subTesterConfig)
 const underlineTester = createStateTesterPlugin(underlineTesterConfig)
+const linkTester = createStateTesterPlugin(linkTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -222,6 +231,65 @@ const UnderlineAction = () => {
 }
 
 
+const LinkButton = forwardRef((props: any, ref: any) => {
+  const { setOpen, active, view } = props
+
+  const style = { color: active ? 'blue' : 'black' }
+  return <span ref={ref}> <MdLink style={style} onClick={
+    () => {
+      if (!view || !view.state.selection)
+        return
+      if (active) {
+        toggleLink(view!.state, view!.dispatch)
+        return
+      }
+      setOpen()
+    }
+  } /></span>
+})
+
+const LinkAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [open, setOpen] = React.useState<boolean>(false)
+
+  const [active, setActive] = React.useState<any>(null)
+
+  const [href, setHref] = React.useState<string>('')
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(linkTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+
+  const HrefInput = () => <div className="href-input">
+    <input type="text" value={href} placeholder="https://abc.com" autoFocus={true} onChange={(e): any => {
+      setHref(e.target.value)
+      e.stopPropagation()
+    }
+    } />  <span onClick={
+      () => {
+        if (!view) {
+          setOpen(false)
+          return
+        }
+        if (!href.trim()) {
+          setOpen(false)
+          return
+        }
+        toggleLink(view!.state, view!.dispatch, { href })
+        setHref('')
+        setOpen(false)
+      }}>确认 </span> <span onClick={() => setOpen(false)}>取消</span>
+  </div >
+  return <Tippy content={<HrefInput />} interactive={true} visible={open} arrow={true} hideOnClick={false} placement="bottom" trigger="manual">
+    <LinkButton active={active} setOpen={() => setOpen(!open)} view={view} />
+  </Tippy>
+}
+
 const schemaDef = {
   marks: {
     ...marks,
@@ -246,7 +314,7 @@ class App extends React.Component {
         <header className="App-header">
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <div>
+        <div className="top-toolbar">
           <BoldAction />
           <EmAction />
           <CodeAction />
@@ -254,12 +322,13 @@ class App extends React.Component {
           <SupAction />
           <SubAction />
           <UnderlineAction />
+          <LinkAction />
         </div>
         <CoreView
           schema={schema}
           renderer={renderer}
           eventBus={eventBus}
-          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester]}
+          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester]}
         />
       </div>
     )
