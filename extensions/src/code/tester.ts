@@ -13,8 +13,8 @@ export interface ICodeStateTestResult {
 export const tester = (view: any, _: any): ICodeStateTestResult => {
   const active = markActive(view.state, view.state.schema.marks.code)
   return ({
-    enable: true,
     active,
+    enable: true,
     select: true,
   })
 }

@@ -47,3 +47,15 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.editor-area {
+    padding: 0 2em;
+}
+
+.top-toolbar {
+    padding: 0 1.4em;
+}
+
+.ProseMirror {
+    min-height: 15em;
+}

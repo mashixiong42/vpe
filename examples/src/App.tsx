@@ -22,13 +22,27 @@ import {
 const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
-import { MdFormatStrikethrough, MdFormatUnderlined, MdLink } from 'react-icons/md'
-import { FaSuperscript, FaSubscript, FaParagraph } from 'react-icons/fa'
+import { MdFormatStrikethrough, MdFormatUnderlined, MdLink, MdFormatQuote } from 'react-icons/md'
+import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
-import { strong, em, code, strikethrough, sup, sub, underline, link, heading, paragraph } from '@vpe/extensions'
+import {
+  blockQuote,
+  code,
+  codeBlock,
+  em,
+  heading,
+  link,
+  paragraph,
+  strikethrough,
+  strong,
+  sub,
+  sup,
+  underline,
+} from '@vpe/extensions'
 
 import './App.css'
+import './bulma.css'
 
 const renderer = ({ editor, view }: IRendererProps) => {
   return (
@@ -49,6 +63,9 @@ const { supTesterConfig } = sup.tester
 const { subTesterConfig } = sub.tester
 const { headingTesterConfig } = heading.tester
 const { paragraphTesterConfig } = paragraph.tester
+const { codeBlockTesterConfig } = codeBlock.tester
+const { blockQuoteTesterConfig } = blockQuote.tester
+
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
 const { toggleCode } = code.command
@@ -59,6 +76,8 @@ const { toggleUnderline } = underline.command
 const { toggleLink } = link.command
 const { setBlockHeading } = heading.command
 const { setBlockParagraph } = paragraph.command
+const { setBlockCode } = codeBlock.command
+const { setBlockQuote } = blockQuote.command
 
 const eventBus = createEventBus()
 
@@ -72,6 +91,8 @@ const underlineTester = createStateTesterPlugin(underlineTesterConfig)
 const linkTester = createStateTesterPlugin(linkTesterConfig)
 const headingTester = createStateTesterPlugin(headingTesterConfig)
 const paragraphTester = createStateTesterPlugin(paragraphTesterConfig)
+const codeBlockTester = createStateTesterPlugin(codeBlockTesterConfig)
+const blockQuoteTester = createStateTesterPlugin(blockQuoteTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -368,6 +389,56 @@ const ParagraphAction = () => {
 
 }
 
+
+const CodeBlockAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(codeBlockTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <FaCode style={style} onClick={
+    () => {
+      if (view) {
+        console.log('toggle block code', view)
+        setBlockCode(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
+const BlockQuoteAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(blockQuoteTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      console.log('block quote test result', activeP)
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <MdFormatQuote style={style} onClick={
+    () => {
+      if (view) {
+        setBlockQuote(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
+
 const schemaDef = {
   marks: {
     ...marks,
@@ -404,13 +475,17 @@ class App extends React.Component {
           <H1Action />
           <H2Action />
           <ParagraphAction />
+          <CodeBlockAction />
+          <BlockQuoteAction />
         </div>
-        <CoreView
-          schema={schema}
-          renderer={renderer}
-          eventBus={eventBus}
-          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester]}
-        />
+        <div className="content editor-area">
+          <CoreView
+            schema={schema}
+            renderer={renderer}
+            eventBus={eventBus}
+            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester]}
+          />
+        </div>
       </div>
     )
   }
