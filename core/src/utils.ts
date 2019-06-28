@@ -22,3 +22,17 @@ export const range = (start: number, stop: number, step?: number): number[] => {
   }
   return a
 }
+
+export const canInsert = (type: any) => (state: any) => {
+  const { $from } = state.selection
+
+  for (let d = $from.depth; d >= 0; d--) {
+    const index = $from.index(d)
+
+    if ($from.node(d).canReplaceWith(index, index, type)) {
+      return true
+    }
+  }
+
+  return false
+}

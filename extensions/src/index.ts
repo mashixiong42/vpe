@@ -10,6 +10,7 @@ import * as heading from './heading/index'
 import * as paragraph from './paragraph/index'
 import * as codeBlock from './codeblock/index'
 import * as blockQuote from './blockquote/index'
+import * as hr from './hr/index'
 
 export {
   blockQuote,
@@ -17,6 +18,7 @@ export {
   codeBlock,
   em,
   heading,
+  hr,
   link,
   paragraph,
   strikethrough,

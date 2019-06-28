@@ -21,7 +21,7 @@ import {
 
 const { CoreView } = core
 
-import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
+import { FiBold, FiItalic, FiCode, FiMinus } from 'react-icons/fi'
 import { MdFormatStrikethrough, MdFormatUnderlined, MdLink, MdFormatQuote } from 'react-icons/md'
 import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
 
@@ -32,6 +32,7 @@ import {
   codeBlock,
   em,
   heading,
+  hr,
   link,
   paragraph,
   strikethrough,
@@ -64,6 +65,7 @@ const { headingTesterConfig } = heading.tester
 const { paragraphTesterConfig } = paragraph.tester
 const { codeBlockTesterConfig } = codeBlock.tester
 const { blockQuoteTesterConfig } = blockQuote.tester
+const { hrTesterConfig } = hr.tester
 
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
@@ -77,6 +79,7 @@ const { setBlockHeading } = heading.command
 const { setBlockParagraph } = paragraph.command
 const { setBlockCode } = codeBlock.command
 const { setBlockQuote } = blockQuote.command
+const { insertHr } = hr.command
 
 const eventBus = createEventBus()
 
@@ -92,6 +95,7 @@ const headingTester = createStateTesterPlugin(headingTesterConfig)
 const paragraphTester = createStateTesterPlugin(paragraphTesterConfig)
 const codeBlockTester = createStateTesterPlugin(codeBlockTesterConfig)
 const blockQuoteTester = createStateTesterPlugin(blockQuoteTesterConfig)
+const hrTester = createStateTesterPlugin(hrTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -437,6 +441,29 @@ const BlockQuoteAction = () => {
 
 }
 
+const HrAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [enabled, setEnabled] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(hrTesterConfig.resultEventName, ({ result: { enable } }: any) => {
+      setEnabled(enable)
+    })
+  }, [])
+  const style = { color: enabled ? 'black' : 'grey' }
+  return <FiMinus style={style} onClick={
+    () => {
+      if (view && enabled) {
+        insertHr(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
 
 const schemaDef = {
   marks: {
@@ -473,13 +500,14 @@ class App extends React.Component {
           <ParagraphAction />
           <CodeBlockAction />
           <BlockQuoteAction />
+          <HrAction />
         </div>
         <div className="content editor-area">
           <CoreView
             schema={schema}
             renderer={renderer}
             eventBus={eventBus}
-            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester]}
+            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester]}
           />
         </div>
       </div>
