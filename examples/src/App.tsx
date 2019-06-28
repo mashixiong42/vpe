@@ -23,10 +23,10 @@ const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode } from 'react-icons/fi'
 import { MdFormatStrikethrough, MdFormatUnderlined, MdLink } from 'react-icons/md'
-import { FaSuperscript, FaSubscript } from 'react-icons/fa'
+import { FaSuperscript, FaSubscript, FaParagraph } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
-import { strong, em, code, strikethrough, sup, sub, underline, link } from '@vpe/extensions'
+import { strong, em, code, strikethrough, sup, sub, underline, link, heading, paragraph } from '@vpe/extensions'
 
 import './App.css'
 
@@ -47,6 +47,8 @@ const { underlineTesterConfig } = underline.tester
 const { linkTesterConfig } = link.tester
 const { supTesterConfig } = sup.tester
 const { subTesterConfig } = sub.tester
+const { headingTesterConfig } = heading.tester
+const { paragraphTesterConfig } = paragraph.tester
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
 const { toggleCode } = code.command
@@ -55,6 +57,8 @@ const { toggleSup } = sup.command
 const { toggleSub } = sub.command
 const { toggleUnderline } = underline.command
 const { toggleLink } = link.command
+const { setBlockHeading } = heading.command
+const { setBlockParagraph } = paragraph.command
 
 const eventBus = createEventBus()
 
@@ -66,6 +70,8 @@ const supTester = createStateTesterPlugin(supTesterConfig)
 const subTester = createStateTesterPlugin(subTesterConfig)
 const underlineTester = createStateTesterPlugin(underlineTesterConfig)
 const linkTester = createStateTesterPlugin(linkTesterConfig)
+const headingTester = createStateTesterPlugin(headingTesterConfig)
+const paragraphTester = createStateTesterPlugin(paragraphTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -290,6 +296,78 @@ const LinkAction = () => {
   </Tippy>
 }
 
+const H1Action = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(headingTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      const h1Active = activeP.find(({ level }: any) => level === 1)
+      setActive(h1Active && h1Active.active || false)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <span className="headings" style={style} onClick={
+    () => {
+      if (view) {
+        setBlockHeading(view!.state, view!.dispatch, { level: 1 })
+      }
+    }
+  }>H1 </span>
+
+}
+
+const H2Action = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(headingTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      const h1Active = activeP.find(({ level }: any) => level === 2)
+      setActive(h1Active && h1Active.active || false)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <span className="headings" style={style} onClick={
+    () => {
+      if (view) {
+        setBlockHeading(view!.state, view!.dispatch, { level: 2 })
+      }
+    }
+  }>H2 </span>
+
+}
+
+
+const ParagraphAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(paragraphTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <span className="headings" style={style} onClick={
+    () => {
+      if (view) {
+        setBlockParagraph(view!.state, view!.dispatch)
+      }
+    }
+  }> P </span>
+
+}
+
 const schemaDef = {
   marks: {
     ...marks,
@@ -323,12 +401,15 @@ class App extends React.Component {
           <SubAction />
           <UnderlineAction />
           <LinkAction />
+          <H1Action />
+          <H2Action />
+          <ParagraphAction />
         </div>
         <CoreView
           schema={schema}
           renderer={renderer}
           eventBus={eventBus}
-          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester]}
+          plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester]}
         />
       </div>
     )

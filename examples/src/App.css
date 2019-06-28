@@ -18,8 +18,17 @@
   font-size: large;
 }
 
-.top-toolbar svg {
+.top-toolbar {
+    display: flex;
+    align-items: center;
+}
+
+.top-toolbar svg, .top-toolbar .headings {
     margin: 0.5em 0.5em;
+}
+
+.top-toolbar .headings {
+    font-size: 0.8em;
 }
 
 .href-input {

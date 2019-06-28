@@ -6,5 +6,7 @@ import * as sup from './sup/index'
 import * as sub from './sub/index'
 import * as underline from './underline/index'
 import * as link from './link/index'
+import * as heading from './heading/index'
+import * as paragraph from './paragraph/index'
 
-export { strong, em, code, strikethrough, sup, sub, underline, link }
+export { strong, em, code, strikethrough, sup, sub, underline, link, heading, paragraph }
