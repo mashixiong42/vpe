@@ -11,9 +11,11 @@ import * as paragraph from './paragraph/index'
 import * as codeBlock from './codeblock/index'
 import * as blockQuote from './blockquote/index'
 import * as hr from './hr/index'
+import * as bulletList from './bulletList/index'
 
 export {
   blockQuote,
+  bulletList,
   code,
   codeBlock,
   em,
