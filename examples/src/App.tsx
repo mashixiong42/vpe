@@ -22,7 +22,7 @@ import {
 const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode, FiMinus } from 'react-icons/fi'
-import { MdFormatStrikethrough, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote } from 'react-icons/md'
+import { MdFormatStrikethrough, MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote } from 'react-icons/md'
 import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
@@ -34,6 +34,7 @@ import {
   em,
   heading,
   hr,
+  lift,
   link,
   orderedList,
   paragraph,
@@ -86,6 +87,7 @@ const { setBlockQuote } = blockQuote.command
 const { insertHr } = hr.command
 const { setBlockBulletList } = bulletList.command
 const { setBlockOrderedList } = orderedList.command
+const { lift: liftUp } = lift.command
 
 const eventBus = createEventBus()
 
@@ -519,6 +521,22 @@ const OrderedListAction = () => {
 
 }
 
+const LiftAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+  }, [])
+  const style = { color: 'black' }
+  return <MdFormatIndentDecrease style={style} onClick={() => {
+    if (view)
+      liftUp(view!.state, view!.dispatch)
+  }} />
+
+}
+
 
 const schemaDef = {
   marks: {
@@ -562,6 +580,7 @@ class App extends React.Component {
           <HrAction />
           <BulletListAction />
           <OrderedListAction />
+          <LiftAction />
         </div>
         <div className="content editor-area">
           <CoreView

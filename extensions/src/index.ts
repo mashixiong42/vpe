@@ -13,6 +13,7 @@ import * as blockQuote from './blockquote/index'
 import * as hr from './hr/index'
 import * as bulletList from './bulletList/index'
 import * as orderedList from './orderedList/index'
+import * as lift from './lift/index'
 
 export {
   blockQuote,
@@ -22,6 +23,7 @@ export {
   em,
   heading,
   hr,
+  lift,
   link,
   orderedList,
   paragraph,
