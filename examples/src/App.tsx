@@ -22,7 +22,7 @@ import {
 const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode, FiMinus } from 'react-icons/fi'
-import { MdFormatStrikethrough, MdFormatUnderlined, MdFormatListBulleted, MdLink, MdFormatQuote } from 'react-icons/md'
+import { MdFormatStrikethrough, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote } from 'react-icons/md'
 import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
@@ -35,6 +35,7 @@ import {
   heading,
   hr,
   link,
+  orderedList,
   paragraph,
   strikethrough,
   strong,
@@ -68,6 +69,7 @@ const { codeBlockTesterConfig } = codeBlock.tester
 const { blockQuoteTesterConfig } = blockQuote.tester
 const { hrTesterConfig } = hr.tester
 const { bulletListTesterConfig } = bulletList.tester
+const { orderedListTesterConfig } = orderedList.tester
 
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
@@ -83,6 +85,7 @@ const { setBlockCode } = codeBlock.command
 const { setBlockQuote } = blockQuote.command
 const { insertHr } = hr.command
 const { setBlockBulletList } = bulletList.command
+const { setBlockOrderedList } = orderedList.command
 
 const eventBus = createEventBus()
 
@@ -100,6 +103,7 @@ const codeBlockTester = createStateTesterPlugin(codeBlockTesterConfig)
 const blockQuoteTester = createStateTesterPlugin(blockQuoteTesterConfig)
 const hrTester = createStateTesterPlugin(hrTesterConfig)
 const bulletListTester = createStateTesterPlugin(bulletListTesterConfig)
+const orderedListTester = createStateTesterPlugin(orderedListTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -492,6 +496,29 @@ const BulletListAction = () => {
 
 }
 
+const OrderedListAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [active, setActive] = React.useState<any>(undefined)
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(orderedListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+      setActive(activeP)
+    })
+  }, [])
+  const style = { color: active ? 'blue' : 'black' }
+  return <MdFormatListNumbered style={style} onClick={
+    () => {
+      if (view) {
+        setBlockOrderedList(view!.state, view!.dispatch)
+      }
+    }
+  } />
+
+}
+
 
 const schemaDef = {
   marks: {
@@ -504,6 +531,7 @@ const schemaDef = {
   nodes: {
     ...nodes,
     ...bulletList.schema.nodes,
+    ...orderedList.schema.nodes
   }
 }
 
@@ -533,13 +561,14 @@ class App extends React.Component {
           <BlockQuoteAction />
           <HrAction />
           <BulletListAction />
+          <OrderedListAction />
         </div>
         <div className="content editor-area">
           <CoreView
             schema={schema}
             renderer={renderer}
             eventBus={eventBus}
-            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester]}
+            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester]}
           />
         </div>
       </div>

@@ -12,6 +12,7 @@ import * as codeBlock from './codeblock/index'
 import * as blockQuote from './blockquote/index'
 import * as hr from './hr/index'
 import * as bulletList from './bulletList/index'
+import * as orderedList from './orderedList/index'
 
 export {
   blockQuote,
@@ -22,6 +23,7 @@ export {
   heading,
   hr,
   link,
+  orderedList,
   paragraph,
   strikethrough,
   strong,
