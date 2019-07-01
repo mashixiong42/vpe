@@ -14,6 +14,7 @@ import * as hr from './hr/index'
 import * as bulletList from './bulletList/index'
 import * as orderedList from './orderedList/index'
 import * as lift from './lift/index'
+import * as image from './image/index'
 
 export {
   blockQuote,
@@ -23,6 +24,7 @@ export {
   em,
   heading,
   hr,
+  image,
   lift,
   link,
   orderedList,

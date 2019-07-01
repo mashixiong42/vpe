@@ -6,7 +6,7 @@ import { EditorView } from 'prosemirror-view'
 import { EditorState } from 'prosemirror-state'
 import { schema as defaultSchema } from 'prosemirror-schema-basic'
 
-import { createEventBusPlugin, createViewUpdateEmitter, CorePluginKeys, ICoreViewProps, CoreViewMountClassName, CoreViewWrapperClassName } from '@vpe/core'
+import { CoreEvents, createEventBusPlugin, createViewUpdateEmitter, CorePluginKeys, ICoreViewProps, CoreViewMountClassName, CoreViewWrapperClassName } from '@vpe/core'
 
 const CoreView = (props: ICoreViewProps) => {
   const {
@@ -58,6 +58,7 @@ const CoreView = (props: ICoreViewProps) => {
 
   useEffect(() => {
     if (editorRef) editorRef.current.appendChild(view.dom)
+    eventBus.emit(CoreEvents.SendMeView)
   }, [])
 
   const editor = (

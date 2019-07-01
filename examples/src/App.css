@@ -31,6 +31,25 @@
     padding: 0 1.4em;
 }
 
+.top-toolbar > span {
+    display: flex;
+    align-items: center;
+}
+
 .ProseMirror {
     min-height: 15em;
+}
+
+.image-selection p {
+    margin-top: 1em;
+}
+
+.image-selection {
+    padding: 1em;
+}
+
+.image-buttons {
+    margin-top: 2em;
+    display: flex;
+    justify-content: space-evenly;
 }

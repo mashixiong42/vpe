@@ -22,7 +22,7 @@ import {
 const { CoreView } = core
 
 import { FiBold, FiItalic, FiCode, FiMinus } from 'react-icons/fi'
-import { MdFormatStrikethrough, MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote } from 'react-icons/md'
+import { MdFormatStrikethrough, MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote, MdImage } from 'react-icons/md'
 import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
@@ -34,6 +34,7 @@ import {
   em,
   heading,
   hr,
+  image,
   lift,
   link,
   orderedList,
@@ -71,6 +72,7 @@ const { blockQuoteTesterConfig } = blockQuote.tester
 const { hrTesterConfig } = hr.tester
 const { bulletListTesterConfig } = bulletList.tester
 const { orderedListTesterConfig } = orderedList.tester
+const { imageTesterConfig } = image.tester
 
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
@@ -88,6 +90,7 @@ const { insertHr } = hr.command
 const { setBlockBulletList } = bulletList.command
 const { setBlockOrderedList } = orderedList.command
 const { lift: liftUp } = lift.command
+const { insertImage } = image.command
 
 const eventBus = createEventBus()
 
@@ -106,6 +109,7 @@ const blockQuoteTester = createStateTesterPlugin(blockQuoteTesterConfig)
 const hrTester = createStateTesterPlugin(hrTesterConfig)
 const bulletListTester = createStateTesterPlugin(bulletListTesterConfig)
 const orderedListTester = createStateTesterPlugin(orderedListTesterConfig)
+const imageTester = createStateTesterPlugin(imageTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -537,6 +541,58 @@ const LiftAction = () => {
 
 }
 
+const ImageButton = forwardRef((props: any, ref: any) => {
+  const { setOpen, enabled, view } = props
+
+  const style = { color: enabled ? 'black' : 'grey' }
+  return <span ref={ref}> <MdImage style={style} onClick={
+    () => {
+      if (!view || !view.state.selection)
+        return
+      setOpen()
+    }
+  } /></span>
+})
+
+const ImageAction = () => {
+  const [view, setView] = React.useState<any>(undefined)
+  const [open, setOpen] = React.useState<boolean>(false)
+
+  const [enabled, setEnabled] = React.useState<any>(null)
+
+  const [title, setTitle] = React.useState<string>('')
+
+  React.useEffect(() => {
+    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+      setView(viewP)
+    })
+    eventBus.on(imageTesterConfig.resultEventName, ({ result: { enable } }: any) => {
+      setEnabled(enable)
+    })
+  }, [])
+
+  const ImageSelection = () => <div className="image-selection">
+    <div className="image-preview">
+      <img src="/images/480x320.png" />
+    </div>
+    <p> <em>Please implement your own image upload component</em> </p>
+    <div className="image-buttons">
+      <span onClick={
+        () => {
+          if (!view) {
+            setOpen(false)
+            return
+          }
+          insertImage(view!.state, view!.dispatch, { title, src: '/images/480x320.png' })
+          setTitle('')
+          setOpen(false)
+        }}>确认 </span> <span onClick={() => setOpen(false)}>取消</span>
+    </div >
+  </div>
+  return <Tippy content={<ImageSelection />} interactive={true} visible={open} arrow={true} hideOnClick={false} placement="bottom" trigger="manual">
+    <ImageButton enabled={enabled} setOpen={() => setOpen(!open)} view={view} />
+  </Tippy>
+}
 
 const schemaDef = {
   marks: {
@@ -581,13 +637,14 @@ class App extends React.Component {
           <BulletListAction />
           <OrderedListAction />
           <LiftAction />
+          <ImageAction />
         </div>
         <div className="content editor-area">
           <CoreView
             schema={schema}
             renderer={renderer}
             eventBus={eventBus}
-            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester]}
+            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester]}
           />
         </div>
       </div>
