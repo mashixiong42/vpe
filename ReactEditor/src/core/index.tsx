@@ -59,7 +59,7 @@ const CoreView = (props: ICoreViewProps) => {
   useEffect(() => {
     if (editorRef) editorRef.current.appendChild(view.dom)
     eventBus.emit(CoreEvents.SendMeView)
-  }, [])
+  }, [editorRef])
 
   const editor = (
     <div className={classnames(className, CoreViewWrapperClassName)} >

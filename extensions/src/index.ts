@@ -15,6 +15,7 @@ import * as bulletList from './bulletList/index'
 import * as orderedList from './orderedList/index'
 import * as lift from './lift/index'
 import * as image from './image/index'
+import * as positions from './positions/index'
 
 export {
   blockQuote,
@@ -29,6 +30,7 @@ export {
   link,
   orderedList,
   paragraph,
+  positions,
   strikethrough,
   strong,
   sub,

@@ -39,6 +39,7 @@ import {
   link,
   orderedList,
   paragraph,
+  positions,
   strikethrough,
   strong,
   sub,
@@ -73,6 +74,7 @@ const { hrTesterConfig } = hr.tester
 const { bulletListTesterConfig } = bulletList.tester
 const { orderedListTesterConfig } = orderedList.tester
 const { imageTesterConfig } = image.tester
+const { positionsTesterConfig } = positions.tester
 
 const { toggleStrong } = strong.command
 const { toggleEm } = em.command
@@ -110,6 +112,7 @@ const hrTester = createStateTesterPlugin(hrTesterConfig)
 const bulletListTester = createStateTesterPlugin(bulletListTesterConfig)
 const orderedListTester = createStateTesterPlugin(orderedListTesterConfig)
 const imageTester = createStateTesterPlugin(imageTesterConfig)
+const positionsTester = createStateTesterPlugin(positionsTesterConfig)
 
 const BoldAction = () => {
   const [view, setView] = React.useState<any>(undefined)
@@ -612,6 +615,8 @@ const schemaDef = {
 const schema = new Schema(schemaDef)
 console.log(schema)
 
+eventBus.on(positionsTesterConfig.resultEventName, (pos: any) => console.log('positions: ', pos))
+
 class App extends React.Component {
   public view: any
   public preState: any
@@ -644,7 +649,7 @@ class App extends React.Component {
             schema={schema}
             renderer={renderer}
             eventBus={eventBus}
-            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester]}
+            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester, positionsTester]}
           />
         </div>
       </div>

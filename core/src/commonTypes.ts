@@ -102,4 +102,5 @@ export type StateTester = (view: any, prevState?: any) => any
 export interface IStateTesterConfig {
   resultEventName: string
   tester: any | [IStateTesterConfig]
+  onDOMEvents?: string[]
 }
