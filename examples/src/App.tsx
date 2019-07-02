@@ -613,9 +613,6 @@ const schemaDef = {
 }
 
 const schema = new Schema(schemaDef)
-console.log(schema)
-
-eventBus.on(positionsTesterConfig.resultEventName, (pos: any) => console.log('positions: ', pos))
 
 class App extends React.Component {
   public view: any
