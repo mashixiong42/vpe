@@ -17,10 +17,12 @@ import {
 } from '@vpe/core'
 
 import {
-  core
+  core,
+  floater,
 } from '@vpe/ReactEditor'
 
 const { CoreView } = core
+const { Floater } = floater
 
 import { FiBold, FiItalic, FiCode, FiMinus } from 'react-icons/fi'
 import { MdFormatStrikethrough, MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote, MdImage } from 'react-icons/md'
@@ -132,6 +134,7 @@ const BoldAction = () => {
   const style = { color: active ? 'blue' : 'black' }
   return <FiBold style={style} onClick={
     () => {
+      console.log('toggle bold...')
       if (view) {
         toggleStrong(view!.state, view!.dispatch)
       }
@@ -652,6 +655,18 @@ class App extends React.Component {
             plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester, positionsTester, onFocusPlugin]}
           />
         </div>
+
+        <Floater eventBus={eventBus}>
+          <>
+            <BoldAction />
+            <EmAction />
+            <CodeAction />
+            <StrikethroughAction />
+            <SupAction />
+            <SubAction />
+            <UnderlineAction />
+          </>
+        </Floater>
       </div>
     )
   }

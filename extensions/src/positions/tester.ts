@@ -12,13 +12,15 @@ export interface ICoords {
 export interface IPositionsStateTestResult {
   start: ICoords
   end: ICoords
+  anchor: ICoords
 }
 
 export const tester = (view: any, _: any): IPositionsStateTestResult => {
 
-  const { from, to } = view.state.selection
+  const { from, to, $anchor } = view.state.selection
 
   return ({
+    anchor: view.coordsAtPos($anchor.pos),
     end: view.coordsAtPos(to),
     start: view.coordsAtPos(from),
   })

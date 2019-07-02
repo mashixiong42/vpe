@@ -1,2 +1,3 @@
 import * as core from './core'
-export { core }
+import * as floater from './floater'
+export { core, floater }
