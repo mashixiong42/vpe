@@ -1,4 +1,4 @@
-import { IStateTesterConfig } from '@vpe/core'
+import { IStateTesterConfig, CoreEvents } from '@vpe/core'
 
 export const PositionsTestResultEventName = 'positions-test-result'
 
@@ -24,10 +24,10 @@ export const tester = (view: any, _: any): IPositionsStateTestResult => {
   })
 }
 
-const onDOMEvents = ['focus']
+const onEvents = [CoreEvents.OnFocus]
 
 export const positionsTesterConfig: IStateTesterConfig = {
-  onDOMEvents,
+  onEvents,
   resultEventName: PositionsTestResultEventName,
   tester,
 }

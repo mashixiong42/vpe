@@ -102,5 +102,5 @@ export type StateTester = (view: any, prevState?: any) => any
 export interface IStateTesterConfig {
   resultEventName: string
   tester: any | [IStateTesterConfig]
-  onDOMEvents?: string[]
+  onEvents?: string[] // tester will be triggered on certain eventBus events as well. Usecase: [CoreEvents.OnFocus, CoreEvents.OnBlur]
 }

@@ -13,6 +13,7 @@ import {
   createEventBus,
   CoreEvents,
   createStateTesterPlugin,
+  createOnFocusPlugin,
 } from '@vpe/core'
 
 import {
@@ -95,6 +96,8 @@ const { lift: liftUp } = lift.command
 const { insertImage } = image.command
 
 const eventBus = createEventBus()
+
+const onFocusPlugin = createOnFocusPlugin()
 
 const boldTester = createStateTesterPlugin(strongTesterConfig)
 const emTester = createStateTesterPlugin(emTesterConfig)
@@ -646,7 +649,7 @@ class App extends React.Component {
             schema={schema}
             renderer={renderer}
             eventBus={eventBus}
-            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester, positionsTester]}
+            plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester, positionsTester, onFocusPlugin]}
           />
         </div>
       </div>

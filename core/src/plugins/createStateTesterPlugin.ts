@@ -9,7 +9,7 @@ export const createStateTesterPlugin = (config: IStateTesterConfig) => {
   const {
     resultEventName,
     tester,
-    onDOMEvents
+    onEvents
   } = config
   const stateTesterPluginKey = getStateTesterPluginKey(resultEventName)
   return new Plugin({
@@ -43,17 +43,28 @@ export const createStateTesterPlugin = (config: IStateTesterConfig) => {
       const plugin: any = {
         update
       }
-      if (onDOMEvents) {
-        const handleDOMEvents: any = {}
-        for (const eventName of onDOMEvents)
-          handleDOMEvents[eventName] = (view: any, _: any) => {
-            console.log('onFocus...')
-            update(view, view.state)
-            return false
-          }
-        plugin.props = {
-          handleDOMEvents
-        }
+      if (onEvents) {
+        for (const eventName of onEvents)
+          eventbus.on(eventName, (param: any) => {
+            const { view = this.viewP } = param
+            const prevState = view.state
+            const result = Array.isArray(tester) ? (tester as Array<IStateTesterConfig>).map(({ resultEventName, tester: t }: IStateTesterConfig) => {
+              if (Array.isArray(t))
+                return {
+                  resultEventName,
+                  result: undefined
+                }
+              else
+                return ({
+                  resultEventName,
+                  result: (t as StateTester)(view, prevState)
+                })
+            }) : (tester as StateTester)(view, prevState)
+            eventbus.emit(resultEventName, {
+              resultEventName,
+              result
+            })
+          })
       }
       return plugin
     }
