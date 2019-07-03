@@ -1,17 +1,11 @@
 import 'prosemirror-view/style/prosemirror.css'
 import { Schema } from 'prosemirror-model'
-
-import Tippy from '@tippy.js/react'
-
 import * as React from 'react'
-
-const { forwardRef } = React
 
 import {
   IRendererProps,
   basicSetup,
   createEventBus,
-  CoreEvents,
   createStateTesterPlugin,
   createOnFocusPlugin,
 } from '@vpe/core'
@@ -23,11 +17,6 @@ import {
 
 const { CoreView } = core
 const { Floater } = floater
-
-import { FiMinus } from 'react-icons/fi'
-import { MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote, MdImage } from 'react-icons/md'
-import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
-
 
 import { Strong } from './menu/Strong'
 import { Em } from './menu/Em'
@@ -57,7 +46,6 @@ import {
   heading,
   hr,
   image,
-  lift,
   link,
   orderedList,
   paragraph,
@@ -80,25 +68,7 @@ const renderer = ({ editor, view }: IRendererProps) => {
   )
 }
 
-
-/* const { headingTesterConfig } = heading.tester */
-/* const { paragraphTesterConfig } = paragraph.tester */
-/* const { codeBlockTesterConfig } = codeBlock.tester */
-/* const { blockQuoteTesterConfig } = blockQuote.tester */
-/* const { hrTesterConfig } = hr.tester */
-/* const { bulletListTesterConfig } = bulletList.tester */
-/* const { orderedListTesterConfig } = orderedList.tester */
-/* const { imageTesterConfig } = image.tester */
 const { positionsTesterConfig } = positions.tester
-
-/* const { setBlockHeading } = heading.command */
-/* const { setBlockParagraph } = paragraph.command */
-/* const { setBlockCode } = codeBlock.command */
-/* const { setBlockQuote } = blockQuote.command */
-/* const { insertHr } = hr.command */
-/* const { setBlockOrderedList } = orderedList.command */
-
-/* const { insertImage } = image.command */
 
 const eventbus = createEventBus()
 
