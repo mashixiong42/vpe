@@ -25,8 +25,8 @@ const LinkButton = forwardRef((props: any, ref: any) => {
 })
 
 export const Link = ({ eventbus }: IEventbusProps) => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [open, setOpen] = React.useState<boolean>(false)
+  const [view, setView] = useState<any>(undefined)
+  const [open, setOpen] = useState<boolean>(false)
 
   const [active, setActive] = React.useState<any>(null)
 

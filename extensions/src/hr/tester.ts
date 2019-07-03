@@ -2,15 +2,15 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { canInsert } from '@vpe/core'
 
-export const HrTestResultEventName = 'hr-test-result'
+export const ResultEventName = 'hr-test-result'
 
-export interface IHrStateTestResult {
+export interface ITestResult {
   enable: boolean
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): IHrStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
 
   const enable = canInsert(view!.state.schema.nodes.horizontal_rule)(view!.state)
 
@@ -21,7 +21,7 @@ export const tester = (view: any, _: any): IHrStateTestResult => {
   })
 }
 
-export const hrTesterConfig: IStateTesterConfig = {
-  resultEventName: HrTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

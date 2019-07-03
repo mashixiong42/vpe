@@ -1,19 +1,16 @@
 import { IStateTesterConfig } from '@vpe/core'
-
 import { blockActive } from '@vpe/core'
 
-export const BlockQuoteTestResultEventName = 'blockQuote-test-result'
+export const ResultEventName = 'blockQuote-test-result'
 
-export interface IBlockQuoteStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): IBlockQuoteStateTestResult => {
-
+export const tester = (view: any, _: any): ITestResult => {
   const active = blockActive(view.state, view.state.schema.nodes.blockquote)
-
   return ({
     active,
     enable: true,
@@ -21,7 +18,7 @@ export const tester = (view: any, _: any): IBlockQuoteStateTestResult => {
   })
 }
 
-export const blockQuoteTesterConfig: IStateTesterConfig = {
-  resultEventName: BlockQuoteTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

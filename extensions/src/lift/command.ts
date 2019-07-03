@@ -1,3 +1,3 @@
 import { lift } from 'prosemirror-commands'
 
-export { lift }
+export { lift as run }

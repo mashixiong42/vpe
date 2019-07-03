@@ -2,15 +2,15 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { blockActive } from '@vpe/core'
 
-export const ParagraphTestResultEventName = 'paragraph-test-result'
+export const ResultEventName = 'paragraph-test-result'
 
-export interface IParagraphStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): IParagraphStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
 
   const active = blockActive(view.state, view.state.schema.nodes.paragraph)
 
@@ -21,7 +21,7 @@ export const tester = (view: any, _: any): IParagraphStateTestResult => {
   })
 }
 
-export const paragraphTesterConfig: IStateTesterConfig = {
-  resultEventName: ParagraphTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

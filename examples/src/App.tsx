@@ -38,6 +38,14 @@ import { Sup } from './menu/Sup'
 import { Underline } from './menu/Underline'
 import { Link } from './menu/Link'
 import { Heading } from './menu/Heading'
+import { Paragraph } from './menu/Paragraph'
+import { Codeblock } from './menu/Codeblock'
+import { BlockQuote } from './menu/BlockQuote'
+import { Hr } from './menu/Hr'
+import { BulletList } from './menu/BulletList'
+import { OrderedList } from './menu/OrderedList'
+import { Lift } from './menu/Lift'
+import { Image } from './menu/Image'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
 import {
@@ -74,24 +82,23 @@ const renderer = ({ editor, view }: IRendererProps) => {
 
 
 /* const { headingTesterConfig } = heading.tester */
-const { paragraphTesterConfig } = paragraph.tester
-const { codeBlockTesterConfig } = codeBlock.tester
-const { blockQuoteTesterConfig } = blockQuote.tester
-const { hrTesterConfig } = hr.tester
-const { bulletListTesterConfig } = bulletList.tester
-const { orderedListTesterConfig } = orderedList.tester
-const { imageTesterConfig } = image.tester
+/* const { paragraphTesterConfig } = paragraph.tester */
+/* const { codeBlockTesterConfig } = codeBlock.tester */
+/* const { blockQuoteTesterConfig } = blockQuote.tester */
+/* const { hrTesterConfig } = hr.tester */
+/* const { bulletListTesterConfig } = bulletList.tester */
+/* const { orderedListTesterConfig } = orderedList.tester */
+/* const { imageTesterConfig } = image.tester */
 const { positionsTesterConfig } = positions.tester
 
 /* const { setBlockHeading } = heading.command */
-const { setBlockParagraph } = paragraph.command
-const { setBlockCode } = codeBlock.command
-const { setBlockQuote } = blockQuote.command
-const { insertHr } = hr.command
-const { setBlockBulletList } = bulletList.command
-const { setBlockOrderedList } = orderedList.command
-const { lift: liftUp } = lift.command
-const { insertImage } = image.command
+/* const { setBlockParagraph } = paragraph.command */
+/* const { setBlockCode } = codeBlock.command */
+/* const { setBlockQuote } = blockQuote.command */
+/* const { insertHr } = hr.command */
+/* const { setBlockOrderedList } = orderedList.command */
+
+/* const { insertImage } = image.command */
 
 const eventbus = createEventBus()
 
@@ -106,225 +113,14 @@ const subTester = createStateTesterPlugin(sub.tester.config)
 const underlineTester = createStateTesterPlugin(underline.tester.config)
 const linkTester = createStateTesterPlugin(link.tester.config)
 const headingTester = createStateTesterPlugin(heading.tester.config)
-const paragraphTester = createStateTesterPlugin(paragraphTesterConfig)
-const codeBlockTester = createStateTesterPlugin(codeBlockTesterConfig)
-const blockQuoteTester = createStateTesterPlugin(blockQuoteTesterConfig)
-const hrTester = createStateTesterPlugin(hrTesterConfig)
-const bulletListTester = createStateTesterPlugin(bulletListTesterConfig)
-const orderedListTester = createStateTesterPlugin(orderedListTesterConfig)
-const imageTester = createStateTesterPlugin(imageTesterConfig)
+const paragraphTester = createStateTesterPlugin(paragraph.tester.config)
+const codeBlockTester = createStateTesterPlugin(codeBlock.tester.config)
+const blockQuoteTester = createStateTesterPlugin(blockQuote.tester.config)
+const hrTester = createStateTesterPlugin(hr.tester.config)
+const bulletListTester = createStateTesterPlugin(bulletList.tester.config)
+const orderedListTester = createStateTesterPlugin(orderedList.tester.config)
+const imageTester = createStateTesterPlugin(image.tester.config)
 const positionsTester = createStateTesterPlugin(positionsTesterConfig)
-
-const ParagraphAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(paragraphTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <span className="headings" style={style} onClick={
-    () => {
-      if (view) {
-        setBlockParagraph(view!.state, view!.dispatch)
-      }
-    }
-  }> P </span>
-
-}
-
-
-const CodeBlockAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(codeBlockTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <FaCode style={style} onClick={
-    () => {
-      if (view) {
-        console.log('toggle block code', view)
-        setBlockCode(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const BlockQuoteAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(blockQuoteTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      console.log('block quote test result', activeP)
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <MdFormatQuote style={style} onClick={
-    () => {
-      if (view) {
-        setBlockQuote(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const HrAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [enabled, setEnabled] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(hrTesterConfig.resultEventName, ({ result: { enable } }: any) => {
-      setEnabled(enable)
-    })
-  }, [])
-  const style = { color: enabled ? 'black' : 'grey' }
-  return <FiMinus style={style} onClick={
-    () => {
-      if (view && enabled) {
-        insertHr(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-
-const BulletListAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(bulletListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <MdFormatListBulleted style={style} onClick={
-    () => {
-      if (view) {
-        setBlockBulletList(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const OrderedListAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(orderedListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <MdFormatListNumbered style={style} onClick={
-    () => {
-      if (view) {
-        setBlockOrderedList(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const LiftAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-  }, [])
-  const style = { color: 'black' }
-  return <MdFormatIndentDecrease style={style} onClick={() => {
-    if (view)
-      liftUp(view!.state, view!.dispatch)
-  }} />
-
-}
-
-const ImageButton = forwardRef((props: any, ref: any) => {
-  const { setOpen, enabled, view } = props
-
-  const style = { color: enabled ? 'black' : 'grey' }
-  return <span ref={ref}> <MdImage style={style} onClick={
-    () => {
-      if (!view || !view.state.selection)
-        return
-      setOpen()
-    }
-  } /></span>
-})
-
-const ImageAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [open, setOpen] = React.useState<boolean>(false)
-
-  const [enabled, setEnabled] = React.useState<any>(null)
-
-  const [title, setTitle] = React.useState<string>('')
-
-  React.useEffect(() => {
-    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventbus.on(imageTesterConfig.resultEventName, ({ result: { enable } }: any) => {
-      setEnabled(enable)
-    })
-  }, [])
-
-  const ImageSelection = () => <div className="image-selection">
-    <div className="image-preview">
-      <img src="/images/480x320.png" />
-    </div>
-    <p> <em>Please implement your own image upload component</em> </p>
-    <div className="image-buttons">
-      <span onClick={
-        () => {
-          if (!view) {
-            setOpen(false)
-            return
-          }
-          insertImage(view!.state, view!.dispatch, { title, src: '/images/480x320.png' })
-          setTitle('')
-          setOpen(false)
-        }}>确认 </span> <span onClick={() => setOpen(false)}>取消</span>
-    </div >
-  </div>
-  return <Tippy content={<ImageSelection />} interactive={true} visible={open} arrow={true} hideOnClick={false} placement="bottom" trigger="manual">
-    <ImageButton enabled={enabled} setOpen={() => setOpen(!open)} view={view} />
-  </Tippy>
-}
 
 const schemaDef = {
   marks: {
@@ -361,14 +157,14 @@ class App extends React.Component {
           <Link eventbus={eventbus} />
           <Heading eventbus={eventbus} level={1} />
           <Heading eventbus={eventbus} level={2} />
-          <ParagraphAction />
-          <CodeBlockAction />
-          <BlockQuoteAction />
-          <HrAction />
-          <BulletListAction />
-          <OrderedListAction />
-          <LiftAction />
-          <ImageAction />
+          <Paragraph eventbus={eventbus} />
+          <Codeblock eventbus={eventbus} />
+          <BlockQuote eventbus={eventbus} />
+          <Hr eventbus={eventbus} />
+          <BulletList eventbus={eventbus} />
+          <OrderedList eventbus={eventbus} />
+          <Lift eventbus={eventbus} />
+          <Image eventbus={eventbus} />
         </div>
         <div className="content editor-area">
           <CoreView

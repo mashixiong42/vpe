@@ -1,6 +1,5 @@
 import { setBlockType } from 'prosemirror-commands'
 
-export const setBlockCode = (state: any, dispatch: any) => {
-  console.log('setting block code...')
+export const run = (state: any, dispatch: any) => {
   setBlockType(state.schema.nodes.code_block)(state, dispatch)
 }

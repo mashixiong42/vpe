@@ -2,15 +2,15 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { blockActive } from '@vpe/core'
 
-export const CodeBlockTestResultEventName = 'codeBlock-test-result'
+export const ResultEventName = 'codeBlock-test-result'
 
-export interface ICodeBlockStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): ICodeBlockStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
 
   const active = blockActive(view.state, view.state.schema.nodes.code_block)
 
@@ -21,7 +21,7 @@ export const tester = (view: any, _: any): ICodeBlockStateTestResult => {
   })
 }
 
-export const codeBlockTesterConfig: IStateTesterConfig = {
-  resultEventName: CodeBlockTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

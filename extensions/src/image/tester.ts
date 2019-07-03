@@ -2,15 +2,15 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { canInsert } from '@vpe/core'
 
-export const ImageTestResultEventName = 'image-test-result'
+export const ResultEventName = 'image-test-result'
 
-export interface IImageStateTestResult {
+export interface ITestResult {
   enable: boolean
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): IImageStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
 
   const enable = canInsert(view!.state.schema.nodes.image)(view!.state)
 
@@ -21,7 +21,7 @@ export const tester = (view: any, _: any): IImageStateTestResult => {
   })
 }
 
-export const imageTesterConfig: IStateTesterConfig = {
-  resultEventName: ImageTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

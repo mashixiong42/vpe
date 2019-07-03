@@ -2,15 +2,15 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { blockActive } from '@vpe/core'
 
-export const BulletListTestResultEventName = 'bulletList-test-result'
+export const ResultEventName = 'bulletList-test-result'
 
-export interface IBulletListStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): IBulletListStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
 
   const active = blockActive(view.state, view.state.schema.nodes.bullet_list)
 
@@ -21,7 +21,7 @@ export const tester = (view: any, _: any): IBulletListStateTestResult => {
   })
 }
 
-export const bulletListTesterConfig: IStateTesterConfig = {
-  resultEventName: BulletListTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }
