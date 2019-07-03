@@ -24,9 +24,20 @@ import {
 const { CoreView } = core
 const { Floater } = floater
 
-import { FiBold, FiItalic, FiCode, FiMinus } from 'react-icons/fi'
-import { MdFormatStrikethrough, MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote, MdImage } from 'react-icons/md'
+import { FiMinus } from 'react-icons/fi'
+import { MdFormatIndentDecrease, MdFormatUnderlined, MdFormatListBulleted, MdFormatListNumbered, MdLink, MdFormatQuote, MdImage } from 'react-icons/md'
 import { FaSuperscript, FaSubscript, FaCode } from 'react-icons/fa'
+
+
+import { Strong } from './menu/Strong'
+import { Em } from './menu/Em'
+import { Code } from './menu/Code'
+import { Strikethrough } from './menu/Strikethrough'
+import { Sub } from './menu/Sub'
+import { Sup } from './menu/Sup'
+import { Underline } from './menu/Underline'
+import { Link } from './menu/Link'
+import { Heading } from './menu/Heading'
 
 import { nodes, marks } from 'prosemirror-schema-basic'
 import {
@@ -61,15 +72,8 @@ const renderer = ({ editor, view }: IRendererProps) => {
   )
 }
 
-const { strongTesterConfig } = strong.tester
-const { emTesterConfig } = em.tester
-const { codeTesterConfig } = code.tester
-const { strikethroughTesterConfig } = strikethrough.tester
-const { underlineTesterConfig } = underline.tester
-const { linkTesterConfig } = link.tester
-const { supTesterConfig } = sup.tester
-const { subTesterConfig } = sub.tester
-const { headingTesterConfig } = heading.tester
+
+/* const { headingTesterConfig } = heading.tester */
 const { paragraphTesterConfig } = paragraph.tester
 const { codeBlockTesterConfig } = codeBlock.tester
 const { blockQuoteTesterConfig } = blockQuote.tester
@@ -79,15 +83,7 @@ const { orderedListTesterConfig } = orderedList.tester
 const { imageTesterConfig } = image.tester
 const { positionsTesterConfig } = positions.tester
 
-const { toggleStrong } = strong.command
-const { toggleEm } = em.command
-const { toggleCode } = code.command
-const { toggleStrikethrough } = strikethrough.command
-const { toggleSup } = sup.command
-const { toggleSub } = sub.command
-const { toggleUnderline } = underline.command
-const { toggleLink } = link.command
-const { setBlockHeading } = heading.command
+/* const { setBlockHeading } = heading.command */
 const { setBlockParagraph } = paragraph.command
 const { setBlockCode } = codeBlock.command
 const { setBlockQuote } = blockQuote.command
@@ -97,19 +93,19 @@ const { setBlockOrderedList } = orderedList.command
 const { lift: liftUp } = lift.command
 const { insertImage } = image.command
 
-const eventBus = createEventBus()
+const eventbus = createEventBus()
 
 const onFocusPlugin = createOnFocusPlugin()
 
-const boldTester = createStateTesterPlugin(strongTesterConfig)
-const emTester = createStateTesterPlugin(emTesterConfig)
-const codeTester = createStateTesterPlugin(codeTesterConfig)
-const strikethroughTester = createStateTesterPlugin(strikethroughTesterConfig)
-const supTester = createStateTesterPlugin(supTesterConfig)
-const subTester = createStateTesterPlugin(subTesterConfig)
-const underlineTester = createStateTesterPlugin(underlineTesterConfig)
-const linkTester = createStateTesterPlugin(linkTesterConfig)
-const headingTester = createStateTesterPlugin(headingTesterConfig)
+const boldTester = createStateTesterPlugin(strong.tester.config)
+const emTester = createStateTesterPlugin(em.tester.config)
+const codeTester = createStateTesterPlugin(code.tester.config)
+const strikethroughTester = createStateTesterPlugin(strikethrough.tester.config)
+const supTester = createStateTesterPlugin(sup.tester.config)
+const subTester = createStateTesterPlugin(sub.tester.config)
+const underlineTester = createStateTesterPlugin(underline.tester.config)
+const linkTester = createStateTesterPlugin(link.tester.config)
+const headingTester = createStateTesterPlugin(heading.tester.config)
 const paragraphTester = createStateTesterPlugin(paragraphTesterConfig)
 const codeBlockTester = createStateTesterPlugin(codeBlockTesterConfig)
 const blockQuoteTester = createStateTesterPlugin(blockQuoteTesterConfig)
@@ -119,288 +115,15 @@ const orderedListTester = createStateTesterPlugin(orderedListTesterConfig)
 const imageTester = createStateTesterPlugin(imageTesterConfig)
 const positionsTester = createStateTesterPlugin(positionsTesterConfig)
 
-const BoldAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(strongTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <FiBold style={style} onClick={
-    () => {
-      console.log('toggle bold...')
-      if (view) {
-        toggleStrong(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const EmAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(emTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <FiItalic style={style} onClick={
-    () => {
-      if (view) {
-        toggleEm(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const CodeAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(codeTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <FiCode style={style} onClick={
-    () => {
-      if (view) {
-        toggleCode(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-
-const StrikethroughAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(strikethroughTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <MdFormatStrikethrough style={style} onClick={
-    () => {
-      if (view) {
-        toggleStrikethrough(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-
-const SupAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(supTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <FaSuperscript style={style} onClick={
-    () => {
-      if (view) {
-        toggleSup(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const SubAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(subTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <FaSubscript style={style} onClick={
-    () => {
-      if (view) {
-        toggleSub(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-const UnderlineAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(underlineTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <MdFormatUnderlined style={style} onClick={
-    () => {
-      if (view) {
-        toggleUnderline(view!.state, view!.dispatch)
-      }
-    }
-  } />
-
-}
-
-
-const LinkButton = forwardRef((props: any, ref: any) => {
-  const { setOpen, active, view } = props
-
-  const style = { color: active ? 'blue' : 'black' }
-  return <span ref={ref}> <MdLink style={style} onClick={
-    () => {
-      if (!view || !view.state.selection)
-        return
-      if (active) {
-        toggleLink(view!.state, view!.dispatch)
-        return
-      }
-      setOpen()
-    }
-  } /></span>
-})
-
-const LinkAction = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [open, setOpen] = React.useState<boolean>(false)
-
-  const [active, setActive] = React.useState<any>(null)
-
-  const [href, setHref] = React.useState<string>('')
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(linkTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      setActive(activeP)
-    })
-  }, [])
-
-  const HrefInput = () => <div className="href-input">
-    <input type="text" value={href} placeholder="https://abc.com" autoFocus={true} onChange={(e): any => {
-      setHref(e.target.value)
-      e.stopPropagation()
-    }
-    } />  <span onClick={
-      () => {
-        if (!view) {
-          setOpen(false)
-          return
-        }
-        if (!href.trim()) {
-          setOpen(false)
-          return
-        }
-        toggleLink(view!.state, view!.dispatch, { href })
-        setHref('')
-        setOpen(false)
-      }}>确认 </span> <span onClick={() => setOpen(false)}>取消</span>
-  </div >
-  return <Tippy content={<HrefInput />} interactive={true} visible={open} arrow={true} hideOnClick={false} placement="bottom" trigger="manual">
-    <LinkButton active={active} setOpen={() => setOpen(!open)} view={view} />
-  </Tippy>
-}
-
-const H1Action = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(headingTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      const h1Active = activeP.find(({ level }: any) => level === 1)
-      setActive(h1Active && h1Active.active || false)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <span className="headings" style={style} onClick={
-    () => {
-      if (view) {
-        setBlockHeading(view!.state, view!.dispatch, { level: 1 })
-      }
-    }
-  }>H1 </span>
-
-}
-
-const H2Action = () => {
-  const [view, setView] = React.useState<any>(undefined)
-  const [active, setActive] = React.useState<any>(undefined)
-
-  React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
-      setView(viewP)
-    })
-    eventBus.on(headingTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
-      const h1Active = activeP.find(({ level }: any) => level === 2)
-      setActive(h1Active && h1Active.active || false)
-    })
-  }, [])
-  const style = { color: active ? 'blue' : 'black' }
-  return <span className="headings" style={style} onClick={
-    () => {
-      if (view) {
-        setBlockHeading(view!.state, view!.dispatch, { level: 2 })
-      }
-    }
-  }>H2 </span>
-
-}
-
-
 const ParagraphAction = () => {
   const [view, setView] = React.useState<any>(undefined)
   const [active, setActive] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(paragraphTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+    eventbus.on(paragraphTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
       setActive(activeP)
     })
   }, [])
@@ -421,10 +144,10 @@ const CodeBlockAction = () => {
   const [active, setActive] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(codeBlockTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+    eventbus.on(codeBlockTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
       setActive(activeP)
     })
   }, [])
@@ -445,10 +168,10 @@ const BlockQuoteAction = () => {
   const [active, setActive] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(blockQuoteTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+    eventbus.on(blockQuoteTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
       console.log('block quote test result', activeP)
       setActive(activeP)
     })
@@ -469,10 +192,10 @@ const HrAction = () => {
   const [enabled, setEnabled] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(hrTesterConfig.resultEventName, ({ result: { enable } }: any) => {
+    eventbus.on(hrTesterConfig.resultEventName, ({ result: { enable } }: any) => {
       setEnabled(enable)
     })
   }, [])
@@ -493,10 +216,10 @@ const BulletListAction = () => {
   const [active, setActive] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(bulletListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+    eventbus.on(bulletListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
       setActive(activeP)
     })
   }, [])
@@ -516,10 +239,10 @@ const OrderedListAction = () => {
   const [active, setActive] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(orderedListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
+    eventbus.on(orderedListTesterConfig.resultEventName, ({ result: { active: activeP } }: any) => {
       setActive(activeP)
     })
   }, [])
@@ -538,7 +261,7 @@ const LiftAction = () => {
   const [view, setView] = React.useState<any>(undefined)
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
   }, [])
@@ -572,10 +295,10 @@ const ImageAction = () => {
   const [title, setTitle] = React.useState<string>('')
 
   React.useEffect(() => {
-    eventBus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
+    eventbus.on(CoreEvents.ViewUpdate, ({ view: viewP, prevState }: any) => {
       setView(viewP)
     })
-    eventBus.on(imageTesterConfig.resultEventName, ({ result: { enable } }: any) => {
+    eventbus.on(imageTesterConfig.resultEventName, ({ result: { enable } }: any) => {
       setEnabled(enable)
     })
   }, [])
@@ -628,16 +351,16 @@ class App extends React.Component {
     return (
       <div className="App">
         <div className="top-toolbar">
-          <BoldAction />
-          <EmAction />
-          <CodeAction />
-          <StrikethroughAction />
-          <SupAction />
-          <SubAction />
-          <UnderlineAction />
-          <LinkAction />
-          <H1Action />
-          <H2Action />
+          <Strong eventbus={eventbus} />
+          <Em eventbus={eventbus} />
+          <Code eventbus={eventbus} />
+          <Strikethrough eventbus={eventbus} />
+          <Sub eventbus={eventbus} />
+          <Sup eventbus={eventbus} />
+          <Underline eventbus={eventbus} />
+          <Link eventbus={eventbus} />
+          <Heading eventbus={eventbus} level={1} />
+          <Heading eventbus={eventbus} level={2} />
           <ParagraphAction />
           <CodeBlockAction />
           <BlockQuoteAction />
@@ -651,20 +374,20 @@ class App extends React.Component {
           <CoreView
             schema={schema}
             renderer={renderer}
-            eventBus={eventBus}
+            eventBus={eventbus}
             plugins={[...basicSetup({ schema, history: true }), boldTester, emTester, codeTester, strikethroughTester, supTester, subTester, underlineTester, linkTester, headingTester, paragraphTester, codeBlockTester, blockQuoteTester, hrTester, bulletListTester, orderedListTester, imageTester, positionsTester, onFocusPlugin]}
           />
         </div>
 
-        <Floater eventBus={eventBus}>
+        <Floater eventBus={eventbus}>
           <>
-            <BoldAction />
-            <EmAction />
-            <CodeAction />
-            <StrikethroughAction />
-            <SupAction />
-            <SubAction />
-            <UnderlineAction />
+            <Strong eventbus={eventbus} />
+            <Em eventbus={eventbus} />
+            <Code eventbus={eventbus} />
+            <Strikethrough eventbus={eventbus} />
+            <Sub eventbus={eventbus} />
+            <Sup eventbus={eventbus} />
+            <Underline eventbus={eventbus} />
           </>
         </Floater>
       </div>

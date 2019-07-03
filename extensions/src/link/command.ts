@@ -5,4 +5,4 @@ export interface ILinkAttr {
   title?: string
 }
 
-export const toggleLink = (state: any, dispatch: any, attr?: any | undefined) => toggleMark(state.schema.marks.link, attr)(state, dispatch)
+export const run = (state: any, dispatch: any, attr?: any | undefined) => toggleMark(state.schema.marks.link, attr)(state, dispatch)

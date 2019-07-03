@@ -2,24 +2,24 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { markActive } from '@vpe/core'
 
-export const LinkTestResultEventName = 'link-test-result'
+export const ResultEventName = 'link-test-result'
 
-export interface ILinkStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): ILinkStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
   const active = markActive(view.state, view.state.schema.marks.link)
   return ({
-    enable: true,
     active,
+    enable: true,
     select: true,
   })
 }
 
-export const linkTesterConfig: IStateTesterConfig = {
-  resultEventName: LinkTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

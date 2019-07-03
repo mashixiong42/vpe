@@ -1,15 +1,15 @@
 import { IStateTesterConfig } from '@vpe/core'
 import { markActive } from '@vpe/core'
 
-export const StrongTestResultEventName = 'strong-test-result'
+export const ResultEventName = 'strong-test-result'
 
-export interface IStrongStateTestResult {
+export interface ITestResult {
   active: boolean
   enable: true
   select: true
 }
 
-export const tester = (view: any, _: any): IStrongStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
   const active = markActive(view.state, view.state.schema.marks.strong)
   return ({
     active,
@@ -18,7 +18,7 @@ export const tester = (view: any, _: any): IStrongStateTestResult => {
   })
 }
 
-export const strongTesterConfig: IStateTesterConfig = {
-  resultEventName: StrongTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

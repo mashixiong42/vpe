@@ -2,24 +2,24 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { markActive } from '@vpe/core'
 
-export const UnderlineTestResultEventName = 'underline-test-result'
+export const ResultEventName = 'underline-test-result'
 
-export interface IUnderlineStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): IUnderlineStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
   const active = markActive(view.state, view.state.schema.marks.underline)
   return ({
-    enable: true,
     active,
+    enable: true,
     select: true,
   })
 }
 
-export const underlineTesterConfig: IStateTesterConfig = {
-  resultEventName: UnderlineTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

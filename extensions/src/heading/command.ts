@@ -5,4 +5,4 @@ export interface IHeadingAttr {
   level: HeadingLevels
 }
 
-export const setBlockHeading = (state: any, dispatch: any, attr: IHeadingAttr) => setBlockType(state.schema.nodes.heading, attr)(state, dispatch)
+export const run = (state: any, dispatch: any, attr: IHeadingAttr) => setBlockType(state.schema.nodes.heading, attr)(state, dispatch)

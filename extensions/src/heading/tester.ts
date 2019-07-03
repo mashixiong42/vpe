@@ -5,14 +5,14 @@ import { blockActive, range } from '@vpe/core'
 import { HeadingLevels } from './schema'
 import { IHeadingAttr } from './command'
 
-export const HeadingTestResultEventName = 'heading-test-result'
+export const ResultEventName = 'heading-test-result'
 
-export interface IHeadingStateTestResult {
-  enable: true
+export interface ITestResult {
   active: {
+    active: boolean,
     level: HeadingLevels,
-    active: boolean
   }[],
+  enable: true,
   select: true
 }
 
@@ -20,7 +20,7 @@ const headings: IHeadingAttr[] = (<HeadingLevels[]>range(1, 6)).map((i: HeadingL
   level: i
 }))
 
-export const tester = (view: any, _: any): IHeadingStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
 
   const active = headings.map((level: IHeadingAttr) => ({
     ...level,
@@ -28,13 +28,13 @@ export const tester = (view: any, _: any): IHeadingStateTestResult => {
   }))
 
   return ({
-    enable: true,
     active,
+    enable: true,
     select: true,
   })
 }
 
-export const headingTesterConfig: IStateTesterConfig = {
-  resultEventName: HeadingTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }

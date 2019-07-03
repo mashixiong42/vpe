@@ -2,24 +2,24 @@ import { IStateTesterConfig } from '@vpe/core'
 
 import { markActive } from '@vpe/core'
 
-export const SubTestResultEventName = 'sub-test-result'
+export const ResultEventName = 'sub-test-result'
 
-export interface ISubStateTestResult {
+export interface ITestResult {
   enable: true
   active: boolean
   select: true
 }
 
-export const tester = (view: any, _: any): ISubStateTestResult => {
+export const tester = (view: any, _: any): ITestResult => {
   const active = markActive(view.state, view.state.schema.marks.sub)
   return ({
-    enable: true,
     active,
+    enable: true,
     select: true,
   })
 }
 
-export const subTesterConfig: IStateTesterConfig = {
-  resultEventName: SubTestResultEventName,
+export const config: IStateTesterConfig = {
+  resultEventName: ResultEventName,
   tester
 }
